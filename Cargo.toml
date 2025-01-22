@@ -1,5 +1,5 @@
 [package]
-name = "flatten01"
+name = "iterflatten"
 version = "0.1.0"
 edition = "2021"
 
