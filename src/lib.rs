@@ -63,20 +63,31 @@ mod tests {
     use super::*;
 
     #[test]
-    fn it_works() {
+    fn flatten_ints() {
         let v = vec![vec![1, 2], vec![3, 4]];
-        let mut flatit = flatten(&v);
+        let mut flat_it = flatten(&v);
         // println!("{}", flatten.count());
-        assert_eq!(Some(&1), flatit.next());
-        assert_eq!(Some(&2), flatit.next());
-        assert_eq!(Some(&3), flatit.next());
-        assert_eq!(Some(&4), flatit.next());
-        assert_eq!(None, flatit.next());
+        assert_eq!(Some(&1), flat_it.next());
+        assert_eq!(Some(&2), flat_it.next());
+        assert_eq!(Some(&3), flat_it.next());
+        assert_eq!(Some(&4), flat_it.next());
+        assert_eq!(None, flat_it.next());
         // for el in flatten {
         //     println!("{:?}", el);
         // }
-        flatit = flatten(&v);
-        let flat: Vec<&i32> = flatit.collect();
+        flat_it = flatten(&v);
+        let flat: Vec<&i32> = flat_it.collect();
         assert_eq!(vec![&1, &2, &3, &4], flat);
+    }
+
+    #[test]
+    fn flatten_chars() {
+        let vs = vec![vec!['a', 'b'], vec!['c']];
+        let mut flat_it = flatten(&vs);
+        // println!("{}", flatten.count());
+        assert_eq!(Some(&'a'), flat_it.next());
+        assert_eq!(Some(&'b'), flat_it.next());
+        assert_eq!(Some(&'c'), flat_it.next());
+        assert_eq!(None, flat_it.next());
     }
 }
