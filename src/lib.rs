@@ -1,26 +1,26 @@
 use std::iter::Iterator;
 
-pub fn flatten<I, J>(iter: I) -> Flatten<I, J>
+pub fn flatten<I>(iter: I) -> Flatten<I>
 where
-    I: IntoIterator<Item = J>,
-    J: IntoIterator,
+    I: IntoIterator,
+    I::Item: IntoIterator,
 {
     Flatten::new(iter)
 }
 
-pub struct Flatten<I, J>
+pub struct Flatten<I>
 where
-    I: IntoIterator<Item = J>,
-    J: IntoIterator,
+    I: IntoIterator,
+    I::Item: IntoIterator,
 {
     outer: I::IntoIter,
-    inner: Option<J::IntoIter>,
+    inner: Option<<I::Item as IntoIterator>::IntoIter>,
 }
 
-impl<I, J> Flatten<I, J>
+impl<I> Flatten<I>
 where
-    I: IntoIterator<Item = J>,
-    J: IntoIterator,
+    I: IntoIterator,
+    I::Item: IntoIterator,
 {
     fn new(v: I) -> Self {
         Flatten {
@@ -30,12 +30,12 @@ where
     }
 }
 
-impl<I, J> Iterator for Flatten<I, J>
+impl<I> Iterator for Flatten<I>
 where
-    I: IntoIterator<Item = J>,
-    J: IntoIterator,
+    I: IntoIterator,
+    I::Item: IntoIterator,
 {
-    type Item = J::Item;
+    type Item = <I::Item as IntoIterator>::Item;
     fn next(&mut self) -> Option<Self::Item> {
         // check if self.inner is None which happens at the first call
         // if self.inner is None, assign self.outer.next() to self.inner
