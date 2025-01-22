@@ -1,5 +1,3 @@
-use std::iter::Iterator;
-
 pub fn flatten<I>(iter: I) -> Flatten<I>
 where
     I: IntoIterator,
