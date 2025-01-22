@@ -64,8 +64,14 @@ mod tests {
     #[test]
     fn flatten_ints() {
         let v = vec![vec![1, 2], vec![3, 4]];
+        // parameters to flatten can also be:
+        // v - need to change checks to Some(1), Some(2) etc. and comment out the "second pass"
+        // v.iter()
+        // v.into_iter() - also need to change checks to Some(1), Some(2) etc. and comment out the "second pass"
+        // v.iter_mut() - need to change 'v' above to 'mut v', and the checks to Some(&mut 1), Some(&mut 2) etc., also comment out the "second pass"
         let mut flat_it = flatten(&v);
-        // println!("{}", flatten.count());
+
+        // assert_eq!(4, flat_it.count());
         assert_eq!(Some(&1), flat_it.next());
         assert_eq!(Some(&2), flat_it.next());
         assert_eq!(Some(&3), flat_it.next());
