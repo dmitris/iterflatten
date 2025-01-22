@@ -48,10 +48,11 @@ where
                 None => panic!("inner is None, should never happen"),
                 Some(ref mut inner) => match inner.next() {
                     Some(e) => return Some(e),
-                    None => {
-                        self.inner = Some(self.outer.next()?.into_iter());
-                        continue;
-                    }
+                    None => match self.outer.next() {
+                        None => return None, // all done - the end of the iteration
+                        Some(it) => self.inner = Some(it.into_iter()),
+                    }, // // more "cryptic" alternative:
+                       // self.inner = Some(self.outer.next()?.into_iter()),
                 },
             }
         }
@@ -72,6 +73,8 @@ mod tests {
         assert_eq!(Some(&3), flat_it.next());
         assert_eq!(Some(&4), flat_it.next());
         assert_eq!(None, flat_it.next());
+        assert_eq!(None, flat_it.next()); // try to call it one more time after the iteration is completed
+
         // for el in flatten {
         //     println!("{:?}", el);
         // }
