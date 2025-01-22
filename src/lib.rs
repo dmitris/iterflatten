@@ -1,20 +1,24 @@
 use std::iter::Iterator;
 
-pub fn flatten<'a>(v: &'a Vec<Vec<i32>>) -> Flatten<'a>
+pub fn flatten<'a, T>(v: &'a Vec<Vec<T>>) -> Flatten<'a, T>
 where
+    T: Copy,
 {
     Flatten::new(v)
 }
 
-pub struct Flatten<'a> {
-    outer: std::slice::Iter<'a, Vec<i32>>,
+pub struct Flatten<'a, T> {
+    outer: std::slice::Iter<'a, Vec<T>>,
     // add field inner with the type being the iterator of the inner vector
-    inner: Option<std::slice::Iter<'a, i32>>,
+    inner: Option<std::slice::Iter<'a, T>>,
     // inner: Option<std::slice::Iter<Vec<i32>>>,
 }
 
-impl<'a> Flatten<'a> {
-    fn new(v: &'a Vec<Vec<i32>>) -> Self {
+impl<'a, T> Flatten<'a, T>
+where
+    T: Copy,
+{
+    fn new(v: &'a Vec<Vec<T>>) -> Self {
         Flatten {
             outer: v.iter(),
             inner: None,
@@ -22,8 +26,11 @@ impl<'a> Flatten<'a> {
     }
 }
 
-impl<'a> Iterator for Flatten<'a> {
-    type Item = i32;
+impl<'a, T> Iterator for Flatten<'a, T>
+where
+    T: Copy,
+{
+    type Item = T;
     fn next(&mut self) -> Option<Self::Item> {
         // check if self.inner is None which happens at the first call
         // if self.inner is None, assign self.outer.next() to self.inner
@@ -114,7 +121,7 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let v = vec![vec![1, 2, 3, 7], vec![4, 5, 6]];
+        let v = vec![vec![1_u32, 2, 3, 7], vec![4, 5, 6]];
         // let mut iter = v.iter();
 
         // assert_eq!(Some(&vec![1, 2, 3]), iter.next());
