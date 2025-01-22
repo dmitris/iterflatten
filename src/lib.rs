@@ -93,4 +93,31 @@ mod tests {
         assert_eq!(Some(&'c'), flat_it.next());
         assert_eq!(None, flat_it.next());
     }
+
+    #[test]
+    fn flatten_empty_vec() {
+        let v: Vec<Vec<i32>> = vec![];
+        let mut flat_it = flatten(&v);
+        assert_eq!(None, flat_it.next());
+    }
+
+    #[test]
+    fn flatten_ints_with_empty() {
+        let v = vec![vec![1, 2], vec![], vec![], vec![3, 4], vec![]];
+        let mut flat_it = flatten(&v);
+        // println!("{}", flatten.count());
+        assert_eq!(Some(&1), flat_it.next());
+        assert_eq!(Some(&2), flat_it.next());
+        assert_eq!(Some(&3), flat_it.next());
+        assert_eq!(Some(&4), flat_it.next());
+        assert_eq!(None, flat_it.next());
+        assert_eq!(None, flat_it.next()); // try to call it one more time after the iteration is completed
+
+        // for el in flatten {
+        //     println!("{:?}", el);
+        // }
+        flat_it = flatten(&v);
+        let flat: Vec<&i32> = flat_it.collect();
+        assert_eq!(vec![&1, &2, &3, &4], flat);
+    }
 }
